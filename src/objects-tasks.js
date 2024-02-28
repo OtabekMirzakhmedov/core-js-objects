@@ -222,8 +222,20 @@ function getJSON(obj) {
  *    const r = fromJSON(Circle.prototype, '{"radius":10}');
  *
  */
-function fromJSON(/* proto, json */) {
-  throw new Error('Not implemented');
+function fromJSON(proto, json) {
+  // Parse the JSON string to convert it to an object
+  const data = JSON.parse(json);
+
+  // Create a new object with the specified prototype
+  const obj = Object.create(proto);
+
+  // Iterate over the keys of the parsed JSON object
+  Object.keys(data).forEach((key) => {
+    // Assign each property from the parsed JSON to the object
+    obj[key] = data[key];
+  });
+
+  return obj;
 }
 
 /**
@@ -291,8 +303,27 @@ function sortCitiesArray(arr) {
  *    "Poland" => ["Lodz"]
  *   }
  */
-function group(/* array, keySelector, valueSelector */) {
-  throw new Error('Not implemented');
+function group(array, keySelector, valueSelector) {
+  // Initialize a new Map to store the grouped elements
+  const resultMap = new Map();
+
+  // Iterate over each element in the input array
+  array.forEach((item) => {
+    // Extract the key and value using the provided selectors
+    const key = keySelector(item);
+    const value = valueSelector(item);
+
+    // Check if the key already exists in the resultMap
+    if (resultMap.has(key)) {
+      // If the key exists, push the value to the corresponding array
+      resultMap.get(key).push(value);
+    } else {
+      // If the key does not exist, create a new array with the value and set it to the key
+      resultMap.set(key, [value]);
+    }
+  });
+
+  return resultMap;
 }
 
 /**
