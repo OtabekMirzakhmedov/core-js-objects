@@ -82,8 +82,8 @@ function compareObjects(/* obj1, obj2 */) {
  *    isEmptyObject({}) => true
  *    isEmptyObject({a: 1}) => false
  */
-function isEmptyObject(/* obj */) {
-  throw new Error('Not implemented');
+function isEmptyObject(obj) {
+  return Object.keys(obj).length === 0;
 }
 
 /**
@@ -102,8 +102,8 @@ function isEmptyObject(/* obj */) {
  *    immutableObj.newProp = 'new';
  *    console.log(immutableObj) => {a: 1, b: 2}
  */
-function makeImmutable(/* obj */) {
-  throw new Error('Not implemented');
+function makeImmutable(obj) {
+  return Object.freeze(obj);
 }
 
 /**
@@ -134,8 +134,43 @@ function makeWord(/* lettersObject */) {
  *    sellTickets([25, 25, 50]) => true
  *    sellTickets([25, 100]) => false (The seller does not have enough money to give change.)
  */
-function sellTickets(/* queue */) {
-  throw new Error('Not implemented');
+function sellTickets(queue) {
+  // Initialize variables to keep track of available bills
+  let bill25 = 0;
+  let bill50 = 0;
+
+  // Iterate through each customer in the queue using a traditional for loop
+  for (let i = 0; i < queue.length; i += 1) {
+    const bill = queue[i];
+    // Check the bill the customer is paying with
+    if (bill === 25) {
+      // If the customer pays with a $25 bill, increment the count of $25 bills
+      bill25 += 1;
+    } else if (bill === 50) {
+      // If the customer pays with a $50 bill, check if there's change available
+      if (bill25 === 0) {
+        return false; // If no $25 bills are available, return false
+      }
+      // Decrement the count of $25 bills and increment the count of $50 bills
+      bill25 -= 1;
+      bill50 += 1;
+    } else if (bill === 100) {
+      // If the customer pays with a $100 bill, check if there's change available
+      if (bill25 >= 1 && bill50 >= 1) {
+        // If there are both $25 and $50 bills available, give change
+        bill25 -= 1;
+        bill50 -= 1;
+      } else if (bill25 >= 3) {
+        // If there are at least three $25 bills available, give change
+        bill25 -= 3;
+      } else {
+        return false; // If change cannot be given, return false
+      }
+    }
+  }
+
+  // If all customers are served, return true
+  return true;
 }
 
 /**
@@ -151,8 +186,15 @@ function sellTickets(/* queue */) {
  *    console.log(r.height);      // => 20
  *    console.log(r.getArea());   // => 200
  */
-function Rectangle(/* width, height */) {
-  throw new Error('Not implemented');
+function Rectangle(width, height) {
+  // Define the properties of the rectangle object
+  this.width = width;
+  this.height = height;
+
+  // Define the getArea method
+  this.getArea = function () {
+    return this.width * this.height;
+  };
 }
 
 /**
